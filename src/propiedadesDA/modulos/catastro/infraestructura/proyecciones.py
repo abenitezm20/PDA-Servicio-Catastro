@@ -1,10 +1,13 @@
 from propiedadesDA.modulos.catastro.dominio.entidades import Catastro
+from propiedadesDA.modulos.catastro.dominio.eventos import CatastroRegistrado
 from propiedadesDA.modulos.catastro.infraestructura.fabricas import FabricaRepositorio
 from propiedadesDA.modulos.catastro.infraestructura.repositorios import RepositorioCatastroSQL
 from propiedadesDA.seedwork.infraestructura.proyecciones import Proyeccion, ProyeccionHandler
 from propiedadesDA.seedwork.infraestructura.proyecciones import ejecutar_proyeccion as proyeccion
+from propiedadesDA.modulos.catastro.infraestructura.despachadores import Despachador
 from abc import ABC, abstractmethod
 import traceback
+import time
 
 
 class ProyeccionCatastro(Proyeccion, ABC):
@@ -30,6 +33,8 @@ class ProyeccionRegistrarCatastro(ProyeccionCatastro):
             print('ERROR: DB del app no puede ser nula')
             return
 
+        print('Ejecutando proyección de catastro...')
+        time.sleep(10)
         fabrica_repositorio = FabricaRepositorio()
         repositorio = fabrica_repositorio.crear_objeto(
             RepositorioCatastroSQL.__class__)
@@ -39,6 +44,16 @@ class ProyeccionRegistrarCatastro(ProyeccionCatastro):
                               estrato=self.estrato,
                               pisos=self.pisos))
         db.commit()
+
+        evento = CatastroRegistrado(propiedad_id=self.propiedad_id,
+                                             numero_catastral=self.numero_catastral,
+                                             estrato=self.estrato,
+                                             pisos=self.pisos)
+        despachador = Despachador()
+        despachador.publicar_evento(evento, 'eventos-catastro')
+        print('Proyección de catastro ejecutada!')
+
+
 
 
 class ProyeccionReservaHandler(ProyeccionHandler):
