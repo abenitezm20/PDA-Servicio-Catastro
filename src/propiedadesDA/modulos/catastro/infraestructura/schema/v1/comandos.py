@@ -11,3 +11,11 @@ class ComandoRegistrarCatastroPayload(Record):
 
 class ComandoRegistrarCatastro(ComandoIntegracion):
     data = ComandoRegistrarCatastroPayload()
+
+
+class ComandoCrearCatastroFallidoPayload(Record):
+    id_propiedad = String()
+    numero_catastro = String()
+
+class ComandoCrearCatastroFallido(ComandoIntegracion):
+    data = ComandoCrearCatastroFallidoPayload()

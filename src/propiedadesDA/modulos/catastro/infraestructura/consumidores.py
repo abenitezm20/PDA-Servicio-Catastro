@@ -8,7 +8,7 @@ from datetime import datetime
 from propiedadesDA.modulos.catastro.infraestructura.proyecciones import ProyeccionRegistrarCatastro
 
 from propiedadesDA.modulos.catastro.infraestructura.schema.v1.eventos import EventoRegistroCatastroCreado
-from propiedadesDA.modulos.catastro.infraestructura.schema.v1.comandos import ComandoRegistrarCatastro
+from propiedadesDA.modulos.catastro.infraestructura.schema.v1.comandos import ComandoRegistrarCatastro, ComandoCrearCatastroFallido
 from propiedadesDA.seedwork.infraestructura import utils
 
 #from propiedadesDA.modulos.catastro.aplicacion.comandos.crear_propiedad_contratos import RegistrarPropiedadContratos
@@ -69,30 +69,30 @@ def suscribirse_a_comandos(app=None):
             cliente.close()
 
 
-# def suscribirse_a_compensacion(app=None):
-#     cliente = None
-#     try:
-#         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-#         consumidor = cliente.subscribe('comandos-crear-propiedad-fallida', consumer_type=_pulsar.ConsumerType.Shared,
-#                                        subscription_name='pda-sub-comandos', schema=AvroSchema(ComandoCrearContratoFallido))
+def suscribirse_a_compensacion(app=None):
+    cliente = None
+    try:
+        cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
+        consumidor = cliente.subscribe('comandos-crear-propiedad-fallida', consumer_type=_pulsar.ConsumerType.Shared,
+                                       subscription_name='pda-sub-comandos', schema=AvroSchema(ComandoCrearCatastroFallido))
 
-#         while True:
-#             mensaje = consumidor.receive()
-#             print(f'Comando compensacion recibido: {mensaje.value().data}')
+        while True:
+            mensaje = consumidor.receive()
+            print(f'Comando compensacion recibido: {mensaje.value().data}')
 
-#             ejecutar_proyeccion(ProyeccionRegistrarArrendamiento(
-#                 ProyeccionRegistrarArrendamiento.DELETE,
-#                 mensaje.value().data.id_propiedad,
-#                 uuid.uuid4(),
-#                 datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-#                 datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-#             ), app=app)
+            ejecutar_proyeccion(ProyeccionRegistrarCatastro(
+                ProyeccionRegistrarCatastro.DELETE,
+                mensaje.value().data.id_propiedad,
+                uuid.uuid4(),
+                datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            ), app=app)
 
-#             consumidor.acknowledge(mensaje)
+            consumidor.acknowledge(mensaje)
 
-#         cliente.close()
-#     except:
-#         logging.error('ERROR: Suscribiendose al tópico de comandos!')
-#         traceback.print_exc()
-#         if cliente:
-#             cliente.close()
+        cliente.close()
+    except:
+        logging.error('ERROR: Suscribiendose al tópico de comandos!')
+        traceback.print_exc()
+        if cliente:
+            cliente.close()
