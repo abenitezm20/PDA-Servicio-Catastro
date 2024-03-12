@@ -22,12 +22,9 @@ def comenzar_consumidor():
     import propiedadesDA.modulos.catastro.infraestructura.consumidores as catastro
 
     # Suscripción a eventos
-    threading.Thread(target=catastro.suscribirse_a_eventos).start()
-    threading.Thread(target=catastro.suscribirse_a_eventos,
-                     args=[app]).start()
+    threading.Thread(target=catastro.suscribirse_a_eventos, args=[app]).start()
 
     # Suscripción a comandos
-    threading.Thread(target=catastro.suscribirse_a_comandos).start()
     threading.Thread(target=catastro.suscribirse_a_comandos, args=[app]).start()
 
 
