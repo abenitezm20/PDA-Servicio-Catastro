@@ -2,7 +2,7 @@ import pulsar
 from pulsar.schema import *
 
 from propiedadesDA.modulos.catastro.infraestructura.schema.v1.eventos import EventoRegistroCatastroCreado, RegistroCatastroPayload
-from propiedadesDA.modulos.catastro.infraestructura.schema.v1.comandos import ComandoRegistrarCatastro, ComandoRegistrarCatastroPayload
+from propiedadesDA.modulos.catastro.infraestructura.schema.v1.comandos import ComandoCrearPropiedad, ComandoCrearPropiedadPayload
 from propiedadesDA.seedwork.infraestructura import utils
 
 import datetime
@@ -36,11 +36,11 @@ class Despachador:
         # TODO Debe existir un forma de crear el Payload en Avro con base al tipo del comando
         # if isinstance(comando, ComandoRegistrarArrendamiento):
         #     print('AQUI :)')
-        payload = ComandoRegistrarCatastroPayload(
+        payload = ComandoCrearPropiedadPayload(
             id_propiedad=dto.id_propiedad,
             numero_catastro=dto.numero_catastro,
         )
 
-        comando_integracion = ComandoRegistrarCatastro(data=payload)
+        comando_integracion = ComandoCrearPropiedad(data=payload)
         self._publicar_mensaje(comando_integracion, topico,
-                               AvroSchema(ComandoRegistrarCatastro))
+                               AvroSchema(ComandoCrearPropiedad))

@@ -4,13 +4,12 @@ from propiedadesDA.seedwork.infraestructura.schema.v1.comandos import (
     ComandoIntegracion)
 
 
-class ComandoRegistrarCatastroPayload(Record):
+class ComandoCrearPropiedadPayload(Record):
     id_propiedad = String()
-    numero_catastro = String()
 
 
-class ComandoRegistrarCatastro(ComandoIntegracion):
-    data = ComandoRegistrarCatastroPayload()
+class ComandoCrearPropiedad(ComandoIntegracion):
+    data = ComandoCrearPropiedadPayload()
 
 
 class ComandoCrearCatastroFallidoPayload(Record):
