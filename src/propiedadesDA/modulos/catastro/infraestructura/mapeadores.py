@@ -9,20 +9,16 @@ class MapeadorCatastro(Mapeador):
 
     def entidad_a_dto(self, entidad: Catastro) -> CatastroDTO:
         catastro_dto = CatastroDTO(
-            entidad.propiedad_id,
-            entidad.numero_catastral,
-            entidad.estrato,
-            entidad.pisos
+            entidad.id_propiedad,
+            entidad.numero_catastro,
         )
 
         return catastro_dto
 
     def dto_a_entidad(self, dto: CatastroDTO) -> Catastro:
         catastro = Catastro(
-            numero_catastral=dto.numero_catastral,
-            estrato=dto.estrato,
-            pisos=dto.pisos,
-            propiedad_id=dto.propiedad_id,
+            numero_catastro=dto.numero_catastro,
+            id_propiedad=dto.id_propiedad,
         )
         
         return catastro

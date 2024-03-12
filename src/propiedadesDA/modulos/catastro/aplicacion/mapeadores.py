@@ -6,10 +6,8 @@ from propiedadesDA.modulos.catastro.dominio.entidades import Catastro
 class MapeadorCatastroDTOJson(AppMap):
     def externo_a_dto(self, externo: dict) -> CatastroDTO:
         catastro_dto = CatastroDTO
-        catastro_dto.numero_catastral = externo.get('numero_catastral')
-        catastro_dto.estrato = externo.get('estrato')
-        catastro_dto.pisos = externo.get('pisos')
-        catastro_dto.propiedad_id = externo.get('propiedad_id')
+        catastro_dto.numero_catastro = externo.get('numero_catastro')
+        catastro_dto.id_propiedad = externo.get('id_propiedad')
         return catastro_dto
     
     def dto_a_externo(self, dto: CatastroDTO) -> dict:
@@ -22,18 +20,14 @@ class MapeadorCatastroDTOJson(AppMap):
 class MapeadorCatastro(RepMap):
     def dto_a_entidad(self, dto: CatastroDTO) -> Catastro:
         entidad = Catastro()
-        entidad.numero_catastral = dto.numero_catastral
-        entidad.estrato = dto.estrato
-        entidad.pisos = dto.pisos
-        entidad.propiedad_id = dto.propiedad_id
+        entidad.numero_catastro = dto.numero_catastro
+        entidad.id_propiedad = dto.id_propiedad
         return entidad
     
     def entidad_a_dto(self, entidad: Catastro) -> CatastroDTO:
         dto = CatastroDTO(
-            entidad.numero_catastral,
-            entidad.estrato,
-            entidad.propiedad_id,
-            entidad.pisos
+            entidad.numero_catastro,
+            entidad.id_propiedad,
         )
         return dto
     

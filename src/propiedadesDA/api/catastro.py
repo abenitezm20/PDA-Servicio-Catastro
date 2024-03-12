@@ -34,5 +34,5 @@ def obtener_catastros():
 def registrar_propiedad_contratro_async():
     map_propiedad = MapeadorCatastroDTOJson()
     catastro_dto = map_propiedad.externo_a_dto(request.json)  
-    Despachador().publicar_comando(catastro_dto, 'comandos-catastro')
+    Despachador().publicar_comando(catastro_dto, 'comandos-crear-propiedad')
     return Response('{}', status=202, mimetype='application/json')

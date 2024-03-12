@@ -55,10 +55,8 @@ tipo: POST
 body
 ```json
 {
-    "propiedad_id": "3",
-    "numero_catastral": "XXXXXX",
-    "estrato": "3",
-    "pisos": "4"
+    "id_propiedad": "02",
+    "numero_catastro": "9586244"
 }
 ```
 

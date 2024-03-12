@@ -5,7 +5,5 @@ from propiedadesDA.seedwork.dominio.eventos import (EventoDominio)
 
 @dataclass
 class CatastroRegistrado(EventoDominio):
-    numero_catastral: str = None
-    estrato: str = None
-    pisos: str = None
-    propiedad_id: str = None
+    numero_catastro: str = None
+    id_propiedad: str = None
