@@ -9,7 +9,7 @@ ca = Blueprint('catastro', __name__)
 
 @ca.route('/catastro/health', methods = ['GET'])
 def health():
-    return Response({'result': 'OK'})
+    return Response({'result': 'OK'}, status=200, mimetype='application/json')
 
 @ca.route('/catastro/propiedad/<id>', methods = ['GET'])
 def obtener_catastro(id=None):
@@ -20,16 +20,19 @@ def obtener_catastro(id=None):
     else:
         return Response({'message': 'GET'})
 
+
+@ca.route('/catastros', methods=['GET'])
+def obtener_catastros():
+    map_catastro = MapeadorCatastroDTOJson()
+    query_resultado = ejecutar_query(map_catastro())
+    resultados = []
+    for catastro in query_resultado.resultado:
+        resultados.append(map_catastro.dto_a_externo(catastro))
+    return resultados
+
 @ca.route('/async-catastro', methods=['POST'])
 def registrar_propiedad_contratro_async():
     map_propiedad = MapeadorCatastroDTOJson()
-    catastro_dto = map_propiedad.externo_a_dto(request.json)
-
-    # comando = ComandoRegistrarArrendamiento(
-    #     propiedad_id=arriendo_dto.propiedad_id,
-    #     numero_contrato=arriendo_dto.numero_contrato,
-    #     fecha_creacion=arriendo_dto.fecha_creacion,
-    #     fecha_actualizacion=arriendo_dto.fecha_actualizacion,)   
-
+    catastro_dto = map_propiedad.externo_a_dto(request.json)  
     Despachador().publicar_comando(catastro_dto, 'comandos-catastro')
     return Response('{}', status=202, mimetype='application/json')
