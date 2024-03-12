@@ -21,7 +21,11 @@ class RepositorioCatastroSQL(RepositorioCatastro):
         return self._fabrica_catastro.crear_objeto(reserva_dto, MapeadorCatastro())
 
     def obtener_todos(self) -> list[Catastro]:
-        ...
+        catastros = db_session.query(CatastroDTO).all()
+        resultado = []
+        for catastro in catastros:
+            resultado.append(self._fabrica_catastro.crear_objeto(catastro, MapeadorCatastro()))
+        return resultado
 
     def agregar(self, propiedad: Catastro):
         propiedad_dto = self.fabrica_catastro.crear_objeto(propiedad, MapeadorCatastro())

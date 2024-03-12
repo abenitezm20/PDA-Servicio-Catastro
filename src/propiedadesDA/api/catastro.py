@@ -1,5 +1,5 @@
 from flask import Blueprint, Response, request
-from propiedadesDA.modulos.catastro.aplicacion.queries.obtener_catastro import ObtenerCatastro
+from propiedadesDA.modulos.catastro.aplicacion.queries.obtener_catastro import ObtenerCatastro, ObtenerCatastros
 from propiedadesDA.modulos.catastro.aplicacion.mapeadores import MapeadorCatastroDTOJson
 from propiedadesDA.seedwork.aplicacion.queries import ejecutar_query
 
@@ -24,7 +24,7 @@ def obtener_catastro(id=None):
 @ca.route('/catastros', methods=['GET'])
 def obtener_catastros():
     map_catastro = MapeadorCatastroDTOJson()
-    query_resultado = ejecutar_query(map_catastro())
+    query_resultado = ejecutar_query(ObtenerCatastros())
     resultados = []
     for catastro in query_resultado.resultado:
         resultados.append(map_catastro.dto_a_externo(catastro))

@@ -20,3 +20,26 @@ class ObtenerCatastroHandler(CatastroQueryBaseHandler):
 def ejecutar_query_obtener_propiedad(query: ObtenerCatastro):
     handler = ObtenerCatastroHandler()
     return handler.handle(query)
+
+@dataclass
+class ObtenerCatastros(Query):
+    pass
+
+
+class ObtenerCatastrosHandler(CatastroQueryBaseHandler):
+
+    def handle(self, query: Query) -> QueryResultado:
+        repositorio = self.fabrica_repositorio.crear_objeto(
+            RepositorioCatastroSQL.__class__)
+        tmp = repositorio.obtener_todos()
+        resultado = []
+        for i in tmp:
+            resultado.append(self.fabrica_catastro.crear_objeto(
+                i, MapeadorCatastro()))
+        return QueryResultado(resultado=resultado)
+
+
+@query.register(Query)
+def ejecutar_query_obtener_catastros(query: Query):
+    handler = ObtenerCatastrosHandler()
+    return handler.handle(query)
