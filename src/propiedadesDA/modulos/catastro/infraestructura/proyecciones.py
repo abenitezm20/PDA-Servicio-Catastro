@@ -21,12 +21,10 @@ class ProyeccionRegistrarCatastro(ProyeccionCatastro):
     DELETE = 2
     UPDATE = 3
 
-    def __init__(self, operacion, propiedad_id, numero_catastral, estrato, pisos):
+    def __init__(self, operacion, id_propiedad, numero_catastro):
         self.operacion = operacion
-        self.propiedad_id = propiedad_id
-        self.numero_catastral = numero_catastral
-        self.estrato = estrato
-        self.pisos = pisos
+        self.id_propiedad = id_propiedad
+        self.numero_catastro = numero_catastro
 
     def ejecutar(self, db=None):
         if not db:
@@ -39,18 +37,14 @@ class ProyeccionRegistrarCatastro(ProyeccionCatastro):
         repositorio = fabrica_repositorio.crear_objeto(
             RepositorioCatastroSQL.__class__)
         repositorio.agregar(
-            Catastro(propiedad_id=self.propiedad_id,
-                              numero_catastral=self.numero_catastral,
-                              estrato=self.estrato,
-                              pisos=self.pisos))
+            Catastro(id_propiedad=self.id_propiedad,
+                              numero_catastro=self.numero_catastro))
         db.commit()
 
-        evento = CatastroRegistrado(propiedad_id=self.propiedad_id,
-                                             numero_catastral=self.numero_catastral,
-                                             estrato=self.estrato,
-                                             pisos=self.pisos)
+        evento = CatastroRegistrado(id_propiedad=self.id_propiedad,
+                                             numero_catastro=self.numero_catastro)
         despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-catastro')
+        despachador.publicar_evento(evento, 'eventos-propiedad-creada')
         print('Proyección de catastro ejecutada!')
 
 

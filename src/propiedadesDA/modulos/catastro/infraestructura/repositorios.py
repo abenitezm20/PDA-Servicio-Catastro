@@ -17,7 +17,7 @@ class RepositorioCatastroSQL(RepositorioCatastro):
         return self._fabrica_catastro
 
     def obtener_por_id(self, id: UUID) -> Catastro:
-        reserva_dto = db_session.query(CatastroDTO).filter_by(propiedad_id=str(id)).one()
+        reserva_dto = db_session.query(CatastroDTO).filter_by(id_propiedad=str(id)).one()
         return self._fabrica_catastro.crear_objeto(reserva_dto, MapeadorCatastro())
 
     def obtener_todos(self) -> list[Catastro]:
@@ -30,5 +30,5 @@ class RepositorioCatastroSQL(RepositorioCatastro):
     def actualizar(self, propiedad: Catastro):
         ...
 
-    def eliminar(self, propiedad_id: UUID):
+    def eliminar(self, id_propiedad: UUID):
         ...

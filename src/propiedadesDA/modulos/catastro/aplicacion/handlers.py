@@ -11,25 +11,21 @@ class HandlerReservaIntegracion(Handler):
     @staticmethod
     def handle_catastro_creado(evento):
         despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-catastro')
+        despachador.publicar_evento(evento, 'eventos-propiedad-creada')
 
 
 class HandlePropiedadDominio():
     @staticmethod
     def handle_catastro_registrada(evento):
         obj = {
-            "numero_catastral": evento.numero_catastral,
-            "estrato": evento.estrato,
-            "propiedad_id": evento.propiedad_id,
-            "pisos": evento.pisos
+            "numero_catastro": evento.numero_catastro,
+            "id_propiedad": evento.id_propiedad,
         }
         map_propiedad = MapeadorCatastroDTOJson()
         propiedad_dto = map_propiedad.externo_a_dto(obj)
         comando = RegistrarCatastros(
-            propiedad_dto.numero_catastral,
-            propiedad_dto.estrato,
-            propiedad_dto.pisos,
-            propiedad_dto.propiedad_id
+            propiedad_dto.numero_catastro,
+            propiedad_dto.id_propiedad
         )
 
         ejecutar_comando(comando)

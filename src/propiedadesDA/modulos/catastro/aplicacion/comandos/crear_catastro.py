@@ -11,20 +11,16 @@ from .base import RegistrarCatastrosBaseHandler
 
 @dataclass
 class RegistrarCatastros(Comando):
-    propiedad_id: str
-    numero_catastral: str
-    estrato: str
-    pisos: str
+    id_propiedad: str
+    numero_catastro: str
 
 
 class RegistrarCatastrosHandler(RegistrarCatastrosBaseHandler):
 
     def handle(self, comando: RegistrarCatastros):
         propiedad_dto = CatastroDTO(
-            numero_catastral=comando.numero_catastral,
-            estrato=comando.estrato,
-            pisos=comando.pisos,
-            propiedad_id=comando.propiedad_id,
+            numero_catastro=comando.numero_catastro,
+            id_propiedad=comando.id_propiedad,
         )
 
         propiedad: Catastro = self.fabrica_catastro.crear_objeto(

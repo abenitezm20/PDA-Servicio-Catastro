@@ -25,10 +25,8 @@ class Despachador:
     def publicar_evento(self, evento, topico):
         # TODO Debe existir un forma de crear el Payload en Avro con base al tipo del evento
         payload = RegistroCatastroPayload(
-            propiedad_id=str(evento.propiedad_id),
-            numero_catastral=str(evento.numero_catastral),
-            estrato=str(evento.estrato),
-            pisos=str(evento.pisos),
+            id_propiedad=str(evento.id_propiedad),
+            numero_catastro=str(evento.numero_catastro),
         )
         evento_integracion = EventoRegistroCatastroCreado(data=payload)
         self._publicar_mensaje(evento_integracion, topico,
@@ -39,10 +37,8 @@ class Despachador:
         # if isinstance(comando, ComandoRegistrarArrendamiento):
         #     print('AQUI :)')
         payload = ComandoRegistrarCatastroPayload(
-            propiedad_id=dto.propiedad_id,
-            numero_catastral=dto.numero_catastral,
-            estrato=dto.estrato,
-            pisos=dto.pisos,
+            id_propiedad=dto.id_propiedad,
+            numero_catastro=dto.numero_catastro,
         )
 
         comando_integracion = ComandoRegistrarCatastro(data=payload)
