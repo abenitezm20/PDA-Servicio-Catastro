@@ -1,6 +1,6 @@
 FROM python:3.10
 
-EXPOSE 3000/tcp
+EXPOSE 3004/tcp
 
 COPY requirements.txt ./
 RUN pip install --upgrade --no-cache-dir pip setuptools wheel
@@ -12,7 +12,7 @@ COPY . .
 # Variables de ambiente Flask
 ENV FLASK_APP=./src/propiedadesDA/api
 ENV FLASK_RUN_HOST=0.0.0.0
-ENV FLASK_RUN_PORT=3001
+ENV FLASK_RUN_PORT=3004
 
 # Ejecución de la aplicación con pipenv y flask
 #CMD ["pipenv", "run", "flask", "run"]
